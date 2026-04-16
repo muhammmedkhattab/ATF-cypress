@@ -1,0 +1,63 @@
+{
+  "name": "atf-cypress",
+  "version": "1.0.0",
+  "description": "Cypress automation framework with POM, API coverage, and AI-assisted diagnostics.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "mocha --require ts-node/register --extensions ts \"tests/unit/**/*.spec.ts\"",
+    "cy:open": "env -u ELECTRON_RUN_AS_NODE cypress open",
+    "cy:run": "env -u ELECTRON_RUN_AS_NODE cypress run",
+    "cy:open:local": "dotenv -e .env.local -- env -u ELECTRON_RUN_AS_NODE cypress open",
+    "cy:open:develop": "dotenv -e .env.develop -- env -u ELECTRON_RUN_AS_NODE cypress open",
+    "cy:open:beta": "dotenv -e .env.beta -- env -u ELECTRON_RUN_AS_NODE cypress open",
+    "cy:open:alpha": "dotenv -e .env.alpha -- env -u ELECTRON_RUN_AS_NODE cypress open",
+    "cy:run:local": "dotenv -e .env.local -- env -u ELECTRON_RUN_AS_NODE cypress run",
+    "cy:run:develop": "dotenv -e .env.develop -- env -u ELECTRON_RUN_AS_NODE cypress run",
+    "cy:run:beta": "dotenv -e .env.beta -- env -u ELECTRON_RUN_AS_NODE cypress run",
+    "cy:run:alpha": "dotenv -e .env.alpha -- env -u ELECTRON_RUN_AS_NODE cypress run",
+    "test:ui": "env -u ELECTRON_RUN_AS_NODE cypress run --spec \"cypress/e2e/ui/**/*.cy.ts\"",
+    "test:ui:smoke": "env -u ELECTRON_RUN_AS_NODE cypress run --spec \"cypress/e2e/ui/text-box.cy.ts\"",
+    "test:api": "env -u ELECTRON_RUN_AS_NODE cypress run --spec \"cypress/e2e/api/**/*.cy.ts\"",
+    "ai:summary": "ts-node scripts/ai-summary.ts results/junit/results.xml results/ai-summary.md",
+    "test:pr": "npm run lint && npm run typecheck && npm run test:unit && npm run test:api && npm run test:ui:smoke"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhammmedkhattab/ATF-cypress.git"
+  },
+  "keywords": [
+    "cypress",
+    "typescript",
+    "automation",
+    "pom",
+    "api-testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/muhammmedkhattab/ATF-cypress/issues"
+  },
+  "homepage": "https://github.com/muhammmedkhattab/ATF-cypress#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
+    "chai": "^6.2.2",
+    "cypress": "^13.17.0",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-cypress": "^6.3.1",
+    "fast-xml-parser": "^5.6.0",
+    "mocha": "^11.7.5",
+    "prettier": "^3.8.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
