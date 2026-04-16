@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+!.env.example
+cypress/videos/
+cypress/screenshots/
+results/
+coverage/
+.DS_Store

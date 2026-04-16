@@ -1,0 +1,55 @@
+name: PR Test Validation
+
+on:
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      CYPRESS_BASE_URL: https://demoqa.com
+      CYPRESS_API_BASE_URL: https://reqres.in/api
+      AI_ENABLED: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Cypress API suite
+        run: npm run test:api
+
+      - name: Cypress UI smoke
+        run: npm run test:ui:smoke
+
+      - name: Build AI summary on failures
+        if: failure()
+        run: npm run ai:summary || true
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-results
+          path: |
+            cypress/screenshots
+            cypress/videos
+            results
