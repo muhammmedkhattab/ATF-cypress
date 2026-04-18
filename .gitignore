@@ -6,4 +6,12 @@ cypress/videos/
 cypress/screenshots/
 results/
 coverage/
+dist/
 .DS_Store
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+.npmrc
+.netrc

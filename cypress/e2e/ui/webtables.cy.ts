@@ -18,7 +18,7 @@ describe('UI - Web Tables', () => {
   it('returns empty state for unknown user', () => {
     page.open();
     page.search('Unknown Name');
-    cy.get('.rt-noData').should('contain.text', 'No rows found');
+    cy.get('tbody tr').should('have.length', 0);
   });
 
   it('clears search input', () => {

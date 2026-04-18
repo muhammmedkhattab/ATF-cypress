@@ -6,25 +6,28 @@ export class CheckBoxPage extends BasePage {
   }
 
   expandAll(): void {
-    cy.get('body').then(($body) => {
-      const selectors = [
-        'button[title="Expand all"]',
-        'button[aria-label="Expand all"]',
-        'button[title*="Expand"]',
-      ];
-      const selector = selectors.find((entry) => $body.find(entry).length > 0);
-
-      if (selector) {
-        cy.get(selector).first().click({ force: true });
-      }
-    });
+    cy.get('.check-box-tree-wrapper').should('exist');
+    // DemoQA uses rc-tree (not react-checkbox-tree). Collapsed nodes have
+    // span.rc-tree-switcher_close. Click ONE at a time and re-query each
+    // iteration — clicking multiple at once causes stale DOM ref errors
+    // because the tree re-renders after every expansion.
+    for (let i = 0; i < 8; i++) {
+      cy.get('body').then(($body) => {
+        if ($body.find('.rc-tree-switcher_close').length > 0) {
+          cy.get('.rc-tree-switcher_close').first().click({ force: true });
+        }
+      });
+    }
   }
 
   toggleDesktop(): void {
-    cy.contains('span.rct-title', 'Desktop').parent().find('.rct-checkbox').click();
+    cy.contains('span.rc-tree-title', 'Desktop')
+      .closest('.rc-tree-treenode')
+      .find('.rc-tree-checkbox')
+      .click();
   }
 
   assertResultContains(text: string): void {
-    cy.get('#result').should('contain.text', text);
+    cy.contains('span.text-success', text).should('exist');
   }
 }

@@ -6,10 +6,10 @@ export class WebTablesPage extends BasePage {
   }
 
   search(value: string): void {
-    cy.get('#searchBox').clear().type(value);
+    cy.get('#searchBox').should('be.visible').clear().type(value);
   }
 
   assertRowContains(text: string): void {
-    cy.get('.rt-tbody').should('contain.text', text);
+    cy.get('tbody').should('contain.text', text);
   }
 }
