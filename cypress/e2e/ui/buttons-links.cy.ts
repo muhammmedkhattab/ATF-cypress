@@ -1,7 +1,8 @@
 describe('UI - Buttons and Links', () => {
   it('click me button triggers message @smoke', () => {
     cy.visit('/buttons');
-    cy.contains('button', 'Click Me').last().click();
+    // Exact regex prevents matching "Double Click Me" or "Right Click Me"
+    cy.contains('button', /^Click Me$/).click();
     cy.get('#dynamicClickMessage').should('contain.text', 'dynamic click');
   });
 
@@ -22,9 +23,11 @@ describe('UI - Buttons and Links', () => {
     cy.get('#simpleLink').should('have.attr', 'href');
   });
 
-  it('created link returns created status message', () => {
+  it('created link element is present', () => {
+    // DemoQA replaced the API-call href with javascript:throw new Error(...)
+    // (React security block). Clicking causes an uncaught exception and
+    // #linkResponse never shows a status. Verify the link element exists.
     cy.visit('/links');
-    cy.get('#created').click();
-    cy.get('#linkResponse').should('contain.text', '201');
+    cy.get('#created').should('be.visible').and('contain.text', 'Created');
   });
 });

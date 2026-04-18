@@ -66,16 +66,21 @@ const callOpenAi = async (prompt: string): Promise<string | null> => {
 };
 
 (async () => {
-  const failures = readFailures(reportPath);
-  if (!failures.length) {
-    console.log('No failures found; AI summary skipped.');
-    process.exit(0);
-  }
+  try {
+    const failures = readFailures(reportPath);
+    if (!failures.length) {
+      console.log('No failures found; AI summary skipped.');
+      process.exit(0);
+    }
 
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  const prompt = buildFailurePrompt(failures);
-  const aiOutput = process.env.AI_ENABLED === 'true' ? await callOpenAi(prompt) : null;
-  const markdown = aiOutput || buildLocalSummary(failures);
-  fs.writeFileSync(outputPath, markdown, 'utf-8');
-  console.log(`Summary written to ${outputPath}`);
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    const prompt = buildFailurePrompt(failures);
+    const aiOutput = process.env.AI_ENABLED === 'true' ? await callOpenAi(prompt) : null;
+    const markdown = aiOutput || buildLocalSummary(failures);
+    fs.writeFileSync(outputPath, markdown, 'utf-8');
+    console.log(`Summary written to ${outputPath}`);
+  } catch (err) {
+    console.error('ai-summary failed:', err instanceof Error ? err.message : err);
+    process.exit(1);
+  }
 })();

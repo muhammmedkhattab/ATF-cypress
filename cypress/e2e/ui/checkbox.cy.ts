@@ -6,7 +6,7 @@ describe('UI - Checkbox', () => {
   it('expands checkbox tree @smoke', () => {
     page.open();
     page.expandAll();
-    cy.contains('span.rct-title', 'Desktop').should('be.visible');
+    cy.contains('span.rc-tree-title', 'Desktop').should('be.visible');
   });
 
   it('selects Desktop and shows result', () => {
@@ -19,21 +19,32 @@ describe('UI - Checkbox', () => {
   it('selects Notes child item', () => {
     page.open();
     page.expandAll();
-    cy.contains('span.rct-title', 'Notes').parent().find('.rct-checkbox').click();
+    cy.contains('span.rc-tree-title', 'Notes')
+      .closest('.rc-tree-treenode')
+      .find('.rc-tree-checkbox')
+      .click();
     page.assertResultContains('notes');
   });
 
   it('selects Commands child item', () => {
     page.open();
     page.expandAll();
-    cy.contains('span.rct-title', 'Commands').parent().find('.rct-checkbox').click();
+    cy.contains('span.rc-tree-title', 'Commands')
+      .closest('.rc-tree-treenode')
+      .find('.rc-tree-checkbox')
+      .click();
     page.assertResultContains('commands');
   });
 
   it('clears selection when clicked twice', () => {
     page.open();
     page.expandAll();
-    cy.contains('span.rct-title', 'Desktop').parent().find('.rct-checkbox').click().click();
-    cy.get('#result').should('not.contain.text', 'desktop');
+    cy.contains('span.rc-tree-title', 'Desktop')
+      .closest('.rc-tree-treenode')
+      .find('.rc-tree-checkbox')
+      .click()
+      .click();
+    // When nothing is selected, no span.text-success elements exist at all
+    cy.contains('span.text-success', 'desktop').should('not.exist');
   });
 });
